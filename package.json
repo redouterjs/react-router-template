@@ -1,0 +1,54 @@
+{
+  "name": "react-router-template",
+  "version": "1.0.0",
+  "description": "Provides a simple passthrough to render a react-router view on express",
+  "main": "dist/index.js",
+  "scripts": {
+    "lint": "eslint src/*",
+    "compile": "rm -rf dist/; babel --plugins transform-runtime -d dist/ src/",
+    "test": "npm run lint && ava --tap --timeout 3000 | tap-spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:redouterjs/react-router-template.git"
+  },
+  "keywords": [
+    "express",
+    "react",
+    "react-router"
+  ],
+  "author": "Benjamin Goh <masotime@gmail.com>",
+  "license": "ISC",
+  "peerDependencies": {
+    "react": "^15.3.2",
+    "react-router": "^2.8.1"
+  },
+  "devDependencies": {
+    "ava": "^0.16.0",
+    "babel-cli": "^6.16.0",
+    "babel-core": "^6.17.0",
+    "babel-eslint": "^7.0.0",
+    "babel-preset-es2015-node4": "^2.1.0",
+    "babel-preset-react": "^6.16.0",
+    "babel-preset-stage-0": "^6.16.0",
+    "cheerio": "^0.22.0",
+    "eslint": "^3.7.1",
+    "eslint-plugin-react": "^6.3.0",
+    "express": "^4.14.0",
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2",
+    "react-router": "^2.8.1",
+    "supertest": "^2.0.0",
+    "supertest-as-promised": "^4.0.0",
+    "tap-spec": "^4.1.1"
+  },
+  "dependencies": {
+    "bluebird": "^3.4.6"
+  },
+  "ava": {
+    "require": ["babel-register"],
+    "babel": {
+      "presets": ["es2015-node4", "stage-0", "react"]
+    }
+  }
+}
