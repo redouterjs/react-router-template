@@ -2,12 +2,12 @@
 
 Provides a flexible promise-based server-side rendering of react-router routes.
 
-A renderer is created by passing in four parameters:
+A renderer is created by passing in an options object with four parameters:
 
-* routes - basically the routes required for react-router to match against
-* createElement - optional function passed to the `<RouterContext>`
-* wrapComponent - optional function that is passed the resulting `<RouterContext>`, allowing you to wrap / compose it in Providers or other additional React components
-* wrapHtml - optional function that allows you to decorate the resultant HTML rendered e.g. appending `<!doctype html>`
+* `routes` - basically the routes required for react-router to match against
+* `createElement` - optional function passed to the `<RouterContext>`
+* `wrapComponent` - optional function that is passed the resulting `<RouterContext>`, allowing you to wrap / compose it in Providers or other additional React components
+* `wrapHtml` - optional function that allows you to decorate the resultant HTML rendered e.g. appending `<!doctype html>`
 
 The renderer itself is a function that takes only one argument, and expects the argument to be an object with the `originalUrl` property. Usually, you can just pass in the `req` object from express.
 
@@ -21,7 +21,7 @@ Note: The renderer returns a Promise, and the functions `wrapHtml` and `wrapComp
 This assumes you're pairing this with `react-redux`
 
 ```
-import routerTemplate from '../src';
+import routerTemplate from 'react-router-template';
 
 ....
 
