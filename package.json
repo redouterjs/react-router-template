@@ -1,6 +1,6 @@
 {
   "name": "react-router-template",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Provides a simple passthrough to render a react-router view on express",
   "main": "dist/index.js",
   "browser": "dist/browser.js",
