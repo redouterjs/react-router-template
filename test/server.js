@@ -64,3 +64,25 @@ test('redirect', async t => {
 		t.pass();
 	}
 });
+
+test('no originalUrl provided', async t => {
+	const renderer = routerTemplate({ routes });
+
+	try {
+		await renderer();
+		t.fail('Should have thrown an error with nothing passed in');
+	} catch (err) {
+		t.truthy(err instanceof Error);
+		t.is(err.message, 'You must specify an object with the originalUrl property when rendering');
+	}
+
+	try {
+		await renderer({});
+		t.fail('Should have thrown an error with an object without originalUrl');
+	} catch (err) {
+		t.truthy(err instanceof Error);
+		t.is(err.message, 'You must specify an object with the originalUrl property when rendering');
+		t.pass();
+	}
+
+})

@@ -68,3 +68,15 @@ test('redirect', async t => {
 		t.pass();
 	});
 });
+
+test('no history', async t => {
+	const { target } = setupTest('/redir');
+
+	const renderer = routerTemplate({ routes, target });
+
+	// in both cases, it should not fail and default to creating
+	// a browser history
+	await renderer();
+	await renderer({});
+	t.pass();
+});
