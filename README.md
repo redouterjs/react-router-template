@@ -80,5 +80,6 @@ const renderer = routerTemplate({
 renderer({ history }).then(() => {
 	// at this point, the react component has been rendered
 });
+```
 
 [1]: https://github.com/defunctzombie/package-browser-field-spec
