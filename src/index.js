@@ -13,10 +13,14 @@ export default function ({ wrapHtml = noOp, wrapComponent = noOp, routes, create
 				if (err) {
 					return fail(err);
 				} else if (redir) {
-					// there is no reason for react-router to redirect
-					return fail(302);
+					const redirectError = new Error('302');
+					redirectError.status = redirectError.statusCode = 302;
+					redirectError.location = redirectError.url = `${redir.pathname}${redir.search}`;
+					return fail(redirectError);
 				} else if (!renderProps) {
-					return fail(404);
+					const notFoundError = new Error('404');
+					notFoundError.status = notFoundError.statusCode = 404;
+					return fail(notFoundError);
 				}
 
 				renderProps.createElement = createElement;

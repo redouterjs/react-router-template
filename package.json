@@ -3,10 +3,13 @@
   "version": "1.0.0",
   "description": "Provides a simple passthrough to render a react-router view on express",
   "main": "dist/index.js",
+  "browser": "dist/browser.js",
   "scripts": {
     "lint": "eslint src/*",
     "compile": "rm -rf dist/; babel --plugins transform-runtime -d dist/ src/",
-    "test": "npm run lint && ava --tap --timeout 3000 | tap-spec"
+    "prepublish": "npm run compile",
+    "test": "npm run lint && ava --tap --timeout 3000 | tap-spec",
+    "debug-test": "npm run lint && ava"
   },
   "repository": {
     "type": "git",
@@ -31,10 +34,12 @@
     "babel-preset-es2015-node4": "^2.1.0",
     "babel-preset-react": "^6.16.0",
     "babel-preset-stage-0": "^6.16.0",
+    "browser-env": "^2.0.12",
     "cheerio": "^0.22.0",
     "eslint": "^3.7.1",
     "eslint-plugin-react": "^6.3.0",
     "express": "^4.14.0",
+    "history": "^4.3.0",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
     "react-router": "^2.8.1",
@@ -46,9 +51,16 @@
     "bluebird": "^3.4.6"
   },
   "ava": {
-    "require": ["babel-register"],
+    "require": [
+      "babel-register",
+      "./test/helpers/setup-browser-env.js"
+    ],
     "babel": {
-      "presets": ["es2015-node4", "stage-0", "react"]
+      "presets": [
+        "es2015-node4",
+        "stage-0",
+        "react"
+      ]
     }
   }
 }

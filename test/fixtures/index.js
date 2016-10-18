@@ -1,12 +1,21 @@
 import React, { Component, PropTypes } from 'react';
-import { Route } from 'react-router';
+import { Route, Redirect } from 'react-router';
 import App from './app';
+import AppContainer from './app-container';
 import Test from './test';
 
 const { object } = PropTypes;
 
-export const testRoutes = (
+export const serverRoutes = (
 	<Route path="/" component={App}>
+		<Redirect path="redir" to="test" />
+		<Route path="test" component={Test} />
+	</Route>
+);
+
+export const clientRoutes = (
+	<Route path="/" component={AppContainer}>
+		<Redirect path="redir" to="test" />
 		<Route path="test" component={Test} />
 	</Route>
 );
