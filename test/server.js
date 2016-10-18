@@ -85,4 +85,4 @@ test('no originalUrl provided', async t => {
 		t.pass();
 	}
 
-})
+});

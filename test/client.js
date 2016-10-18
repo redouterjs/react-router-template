@@ -80,3 +80,21 @@ test('no history', async t => {
 	await renderer({});
 	t.pass();
 });
+
+test('invalid target', async t => {
+	try {
+		routerTemplate({ target: 'invalid' });
+		t.fail('expected an error');
+	} catch (err) {
+		t.truthy(err instanceof Error);
+		t.is(err.message, 'The client side templater requires a valid DOM node assigned to the target property on the configuration object');
+		t.pass();
+	}
+});
+
+test('no routes', async t => {
+	const { target } = setupTest('/redir');
+	const renderer = routerTemplate({ target });
+	await renderer();
+	t.pass();
+});

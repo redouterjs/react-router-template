@@ -5,7 +5,7 @@ import Promise from 'bluebird';
 
 const noOp = _ => _;
 
-export default function ({ wrapHtml = noOp, wrapComponent = noOp, routes, createElement }) {
+export default function ({ wrapHtml = noOp, wrapComponent = noOp, routes, createElement } = {}) {
 
 	return async ({ originalUrl } = {}) => new Promise((ok, fail) => {
 		try {
