@@ -12,6 +12,10 @@ export default function ({ wrapComponent = noOp, routes, createElement } = {}) {
 		try {
 			if (history instanceof Node) {
 				target = history;
+				history = undefined;
+			}
+
+			if (!history) {
 				history = browserHistory;
 			}
 
