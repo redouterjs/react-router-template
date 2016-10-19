@@ -7,7 +7,7 @@
   "scripts": {
     "lint": "eslint src/*",
     "compile": "rm -rf dist/; babel --plugins transform-runtime -d dist/ src/",
-    "prepublish": "npm run compile",
+    "prepublish": "npm test && npm run compile",
     "test": "npm run lint && ava --tap --timeout 3000 | tap-spec",
     "debug-test": "npm run lint && ava"
   },
