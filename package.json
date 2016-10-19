@@ -1,7 +1,7 @@
 {
   "name": "react-router-template",
-  "version": "3.0.0",
-  "description": "Provides a simple passthrough to render a react-router view on express",
+  "version": "3.0.1",
+  "description": "Provides a universal solution to rendering a react-router hierarchy on both the server and the client.",
   "main": "dist/server.js",
   "browser": "dist/browser.js",
   "scripts": {
