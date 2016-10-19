@@ -1,6 +1,6 @@
 {
   "name": "react-router-template",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "Provides a universal solution to rendering a react-router hierarchy on both the server and the client.",
   "main": "dist/server.js",
   "browser": "dist/browser.js",
