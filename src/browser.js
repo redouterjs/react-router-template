@@ -6,16 +6,21 @@ import Promise from 'bluebird';
 
 const noOp = _ => _;
 
-export default function ({ target = document, wrapComponent = noOp, routes, createElement } = {}) {
+export default function ({ wrapComponent = noOp, routes, createElement } = {}) {
 
-	if (!target || !(target instanceof Node)) {
-		throw new Error('The client side templater requires a valid DOM node assigned to the target property on the configuration object');
-	}
-
-	return async ({ history } = {}) => new Promise((ok, fail) => {
+	return async (history, target = document) => new Promise((ok, fail) => {
 		try {
-			if (!history) {
+			if (history instanceof Node) {
+				target = history;
 				history = browserHistory;
+			}
+
+			if (history && history.history) {
+				history = history.history;
+			}
+
+			if (!target || !(target instanceof Node)) {
+				throw new Error('You must provide a valid DOM node as the render target');
 			}
 
 			let output; // ugly, but oh well

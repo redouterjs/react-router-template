@@ -1,7 +1,7 @@
 import React from 'react';
 import test from 'ava';
 import { serverRoutes as routes, TestProvider } from './fixtures';
-import routerTemplate from '../src';
+import routerTemplate from '../src/server';
 import cheerio from 'cheerio';
 
 test('basic usage', async t => {
@@ -11,6 +11,16 @@ test('basic usage', async t => {
 	const $ = cheerio.load(output);
 	t.is($('div').length, 1);
 	t.is($('title').text(), 'No Title');
+	t.pass();
+});
+
+test('render using a plain string path', async t => {
+	const renderer = routerTemplate({ routes });
+
+	const output = await renderer('/test');
+	const $ = cheerio.load(output);
+	t.is($('div').length, 1);
+	t.is($('p').text(), 'Hello world');
 	t.pass();
 });
 
@@ -65,7 +75,7 @@ test('redirect', async t => {
 	}
 });
 
-test('no originalUrl provided', async t => {
+test('no path provided', async t => {
 	const renderer = routerTemplate({ routes });
 
 	try {
@@ -73,7 +83,6 @@ test('no originalUrl provided', async t => {
 		t.fail('Should have thrown an error with nothing passed in');
 	} catch (err) {
 		t.truthy(err instanceof Error);
-		t.is(err.message, 'You must specify an object with the originalUrl property when rendering');
 	}
 
 	try {
@@ -81,7 +90,6 @@ test('no originalUrl provided', async t => {
 		t.fail('Should have thrown an error with an object without originalUrl');
 	} catch (err) {
 		t.truthy(err instanceof Error);
-		t.is(err.message, 'You must specify an object with the originalUrl property when rendering');
 		t.pass();
 	}
 

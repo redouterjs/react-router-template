@@ -20,9 +20,19 @@ function setupTest(location) {
 
 test('basic usage', async t => {
 	const { target, history } = setupTest('/');
-	const renderer = routerTemplate({ routes, target });
+	const renderer = routerTemplate({ routes });
 
-	await renderer({ history });
+	await renderer({ history }, target);
+	t.is(target.querySelectorAll('div').length, 1);
+	t.is(target.querySelector('h1').textContent, 'No Title');
+	t.pass();
+});
+
+test('works without placing history in an object', async t => {
+	const { target, history } = setupTest('/');
+	const renderer = routerTemplate({ routes });
+
+	await renderer(history, target);
 	t.is(target.querySelectorAll('div').length, 1);
 	t.is(target.querySelector('h1').textContent, 'No Title');
 	t.pass();
@@ -33,7 +43,6 @@ test('wrappers', async t => {
 	const initialState = { title: 'Pineapple' };
 	const renderer = routerTemplate({
 		routes,
-		target,
 		wrapComponent: component => (
 			<TestProvider initialState={initialState}>
 				{component}
@@ -41,16 +50,16 @@ test('wrappers', async t => {
 		),
 	});
 
-	await renderer({ history });
+	await renderer({ history }, target);
 	t.is(target.querySelector('h1').textContent, 'Pineapple');
 	t.pass();
 });
 
 test('not found', async t => {
 	const { target, history } = setupTest('/nosuchroute');
-	const renderer = routerTemplate({ routes, target });
+	const renderer = routerTemplate({ routes });
 
-	await renderer({ history });
+	await renderer({ history }, target);
 	t.is(target.innerHTML, '<!-- react-empty: 1 -->');
 	t.pass();
 });
@@ -58,9 +67,9 @@ test('not found', async t => {
 test('redirect', async t => {
 	const { target, history } = setupTest('/redir');
 
-	const renderer = routerTemplate({ routes, target });
+	const renderer = routerTemplate({ routes });
 
-	await renderer({ history });
+	await renderer({ history }, target);
 
 	// artifact of idiocy of react-router not supporting history.location
 	history.listen(({ pathname }) => {
@@ -72,29 +81,30 @@ test('redirect', async t => {
 test('no history', async t => {
 	const { target } = setupTest('/redir');
 
-	const renderer = routerTemplate({ routes, target });
+	const renderer = routerTemplate({ routes });
 
 	// in both cases, it should not fail and default to creating
 	// a browser history
-	await renderer();
-	await renderer({});
+	await renderer(target);
+	await renderer({}, target);
 	t.pass();
 });
 
 test('invalid target', async t => {
 	try {
-		routerTemplate({ target: 'invalid' });
+		const { history } = setupTest('/redir');
+		const renderer = routerTemplate({ routes });
+		await renderer(history, 'invalid target');
 		t.fail('expected an error');
 	} catch (err) {
 		t.truthy(err instanceof Error);
-		t.is(err.message, 'The client side templater requires a valid DOM node assigned to the target property on the configuration object');
 		t.pass();
 	}
 });
 
 test('no routes', async t => {
-	const { target } = setupTest('/redir');
-	const renderer = routerTemplate({ target });
-	await renderer();
+	const { history, target } = setupTest('/redir');
+	const renderer = routerTemplate();
+	await renderer(history, target);
 	t.pass();
 });

@@ -7,11 +7,15 @@ const noOp = _ => _;
 
 export default function ({ wrapHtml = noOp, wrapComponent = noOp, routes, createElement } = {}) {
 
-	return async ({ originalUrl } = {}) => new Promise((ok, fail) => {
+	return async (path) => new Promise((ok, fail) => {
 		try {
-			if (!originalUrl) {
-				throw new Error('You must specify an object with the originalUrl property when rendering');
+			let originalUrl = path && path.originalUrl || path;
+
+			if (!(typeof originalUrl === 'string')) {
+				throw new Error('You must specify either a string or an object with the originalUrl property when rendering');
 			}
+
+			console.log(originalUrl);
 
 			match({ routes, location: originalUrl }, async (err, redir, renderProps) => {
 				if (err) {
