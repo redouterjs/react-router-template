@@ -10,7 +10,7 @@ Provides a universal solution to rendering a [react-router][rr] hierarchy on bot
 
 `react-router-template` allows a user to define a _template_ on how to render components, which may involve wrapping the resulting output with additional React components, or additional strings that cannot be rendered by React, such as prefixing with the `DOCTYPE`.
 
-## server
+# Server usage
 
 Server-side templates are defined with the following options:
 
@@ -34,12 +34,10 @@ const routes = (
 );
 
 // most basic use case
-const render = template({
-	routes
-});
+const render = template({ routes });
 
 // using more options
-const render = template({
+const anotherRender = template({
 	routes,
 	wrapHtml: html => `<!DOCTYPE HTML>${html}`,
 	wrapComponent: component => (
@@ -70,7 +68,7 @@ render('/some-path');
 render({ originalUrl: '/some-path'});
 ```
 
-### not founds and redirects
+## not founds and redirects
 
 When the path specified cannot be found or redirects, the `render` function will throw an `Error` with the following properties:
 
@@ -94,7 +92,7 @@ app.get('*', (req, res) => {
 });
 ```
 
-## browser
+# Browser usage
 
 Browser templates are defined with the following options:
 
@@ -102,7 +100,7 @@ Browser templates are defined with the following options:
 * `createElement` - optional function passed to the `<RouterContext>`
 * `wrapComponent` - optional function that is passed the resulting `<RouterContext>`, allowing you to wrap / compose it in Providers (e.g. [react-redux's `<Provider>`][rrx]) or other additional React components
 
-`wrapComponent` is evaluated as `Promise`s, and thus can be either synchronous or asynchronous.
+`wrapComponent` is evaluated as a `Promise` and thus can be either synchronous or asynchronous.
 
 ```
 import template from 'react-router-template';
@@ -153,7 +151,7 @@ This reflects the nature of client-side rendering - the path is usually determin
 
 There is no `wrapHtml` option, because on the browser React is primarily concerned with _mounting_ the component onto an existing DOM, not producing any HTML string output.
 
-### error handling
+## error handling
 
 There is no special API for errors on the browser, apart from the fact that any error is caught as a Promise rejection. 
 
@@ -166,7 +164,7 @@ render(browserHistory, target)
 	.catch(err => console.error(err));
 ```
 
-### note regarding client-side bundlers like webpack
+## note regarding client-side bundlers like webpack
 
 Bundlers are expected to use the entrypoint specified by `browser` in this module's `package.json` as per the [specifications outlined here][1]
 
