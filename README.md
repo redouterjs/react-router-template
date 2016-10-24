@@ -1,8 +1,12 @@
 # react-router-template
 
-Provides a universal solution to rendering a [react-router][rr] hierarchy on both the server and the client.
+Provides a universal solution to rendering a [react-router][rr] hierarchy on both the server and the browser.
 
-`react-router-template` aims to balance between a simple approach to rendering routes while maintaining enough flexibility to support all the needed options for bother server and client.
+`react-router-template` aims to:
+
+* simplify the complex differences between server and browser by relying on a common render signature
+* remove complexity with async and sync route rendering by making render always async.
+* recognize common requirements of universal rendering and provide these options easily.
 
 `react-router-template` allows a user to define a _template_ on how to render components, which may involve wrapping the resulting output with additional React components, or additional strings that cannot be rendered by React, such as prefixing with the `DOCTYPE`.
 
@@ -10,12 +14,12 @@ Provides a universal solution to rendering a [react-router][rr] hierarchy on bot
 
 Server-side templates are defined with the following options:
 
-* `routes` - the `<Route>` hierarchy required for react-router to match against and render
+* `routes` - the `<Route>` hierarchy required for react-router to match against and render. **Supports async routes**
 * `createElement` - optional function passed to the `<RouterContext>`
 * `wrapComponent` - optional function that is passed the resulting `<RouterContext>`, allowing you to wrap / compose it in Providers (e.g. [react-redux's `<Provider>`][rrx]) or other additional React components
 * `wrapHtml` - optional function that allows you to decorate the resultant HTML string
 
-Note that the output of all optional functions are evaluated as `Promise`s, so all functions can be asynchronous.
+Both `wrapComponent` and `wrapHtml` are evaluated as `Promise`s, and thus can be either synchronous or asynchronous.
 
 ```
 import template from 'react-router-template';
@@ -92,15 +96,13 @@ app.get('*', (req, res) => {
 
 ## browser
 
-Client-side templates are defined with the following options:
+Browser templates are defined with the following options:
 
-* `routes` - the `<Route>` hierarchy required for react-router to match against and render
+* `routes` - the `<Route>` hierarchy required for react-router to match against and render.  **Supports async routes**
 * `createElement` - optional function passed to the `<RouterContext>`
 * `wrapComponent` - optional function that is passed the resulting `<RouterContext>`, allowing you to wrap / compose it in Providers (e.g. [react-redux's `<Provider>`][rrx]) or other additional React components
 
-The client-side lacks the `wrapHtml` option, because on the client React is primarily concerned with mounting the component onto an existing DOM, rather than producing any HTML string output.
-
-Again, all optional functions are evaluated as `Promise`s.
+`wrapComponent` is evaluated as `Promise`s, and thus can be either synchronous or asynchronous.
 
 ```
 import template from 'react-router-template';
@@ -124,12 +126,10 @@ const render = template({
 });
 ```
 
-The resulting `render()` function takes **2** arguments, rather than one. Instead of a path (or an object containing `originalUrl`):
+The resulting `render()` is a promise-returning function that takes up to 2 arguments, rather than just one. Instead of a path (or an object containing `originalUrl`):
 
-* the first argument should be a `history` object (or object containing a `history` property).
-* the second argument should be the DOM element to mount the React component to.
-
-This, again, reflects the nature of client-side rendering - the path is usually determined from the browser context rather than being supplied, and the second argument matches React's own `render` signature.
+* the first argument can be a `history` object (or object containing a `history` property).
+* the second argument, if present, should be the DOM element to mount the React component to.
 
 ```
 // some client JS entry point
@@ -149,9 +149,17 @@ render({ history: browserHistory}, target);
 render(target);
 ```
 
+This reflects the nature of client-side rendering - the path is usually determined from the browser context rather than being supplied, and the second argument matches React's own `render` signature.
+
+There is no `wrapHtml` option, because on the browser React is primarily concerned with _mounting_ the component onto an existing DOM, not producing any HTML string output.
+
 ### error handling
 
-There is no special API for errors, apart from the fact that any error is caught as a Promise rejection. Any errors created are no different than if you weren't using react-router-template, but just React's native `.render()` method.
+There is no special API for errors on the browser, apart from the fact that any error is caught as a Promise rejection. 
+
+**Redirect are handled automatically on the browser for you via the supplied history object.**
+
+Any errors created are no different than if you weren't using react-router-template, but just React's native `.render()` method.
 
 ```
 render(browserHistory, target)
