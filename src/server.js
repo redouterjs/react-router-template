@@ -15,8 +15,6 @@ export default function ({ wrapHtml = noOp, wrapComponent = noOp, routes, create
 				throw new Error('You must specify either a string or an object with the originalUrl property when rendering');
 			}
 
-			console.log(originalUrl);
-
 			match({ routes, location: originalUrl }, async (err, redir, renderProps) => {
 				if (err) {
 					return fail(err);

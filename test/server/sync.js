@@ -1,7 +1,7 @@
 import React from 'react';
 import test from 'ava';
-import { serverRoutes as routes, TestProvider } from './fixtures';
-import routerTemplate from '../src/server';
+import { serverRoutes as routes, TestProvider } from '../fixtures';
+import routerTemplate from '../../src/server';
 import cheerio from 'cheerio';
 
 test('basic usage', async t => {
