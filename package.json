@@ -8,7 +8,7 @@
     "lint": "eslint src/*",
     "compile": "rm -rf dist/; babel --plugins transform-runtime -d dist/ src/",
     "prepublish": "npm test && npm run compile",
-    "test": "npm run lint && ava --tap --timeout 3000 | tap-spec",
+    "test": "npm run lint && ava --tap | tap-spec",
     "debug-test": "npm run lint && ava"
   },
   "repository": {
@@ -31,9 +31,11 @@
     "babel-cli": "^6.16.0",
     "babel-core": "^6.17.0",
     "babel-eslint": "^7.0.0",
+    "babel-plugin-transform-runtime": "^6.15.0",
     "babel-preset-es2015-node4": "^2.1.0",
     "babel-preset-react": "^6.16.0",
     "babel-preset-stage-0": "^6.16.0",
+    "babel-register": "^6.16.3",
     "browser-env": "^2.0.12",
     "cheerio": "^0.22.0",
     "eslint": "^3.7.1",
