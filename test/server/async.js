@@ -62,7 +62,7 @@ test('redirect', async t => {
 	const renderer = routerTemplate({ routes });
 
 	try {
-		const output = await renderer({ originalUrl: '/redir' });
+		await renderer({ originalUrl: '/redir' });
 		t.fail('Should have thrown an error');
 	} catch (err) {
 		t.truthy(err instanceof Error);
